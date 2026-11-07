@@ -1,0 +1,28 @@
+{
+  "scope": "One closed root-zone/aquifer transfer; source audit, not field validation",
+  "repository": "https://github.com/gaia-hazlab/gwl-space-time-smooth",
+  "commit": "435445f17b90e1cdc4ee4e12a9e1cb17338f7e3f",
+  "source_sha256": "4889732934b673671df914f37a196b905e04cd23ba4db90316b09e841396129e",
+  "inputs": {
+    "precip_mm": 0.0,
+    "pet_mm": 0.0,
+    "theta_wp": 0.1,
+    "theta_fc": 0.28,
+    "theta_sat": 0.45,
+    "root_depth_m": 1.0,
+    "specific_yield": 0.3,
+    "water_table_depth_initial_m": 1.5,
+    "init": "wp",
+    "dt_days": 1.0
+  },
+  "soil_storage_change_mm": 0.2464145421981756,
+  "aquifer_storage_change_mm": 0.0,
+  "external_input_mm": 0.0,
+  "external_output_mm": 0.0,
+  "recorded_internal_capillary_mm": 0.24641163647174835,
+  "combined_water_residual_mm": 0.2464145421981756,
+  "expected_combined_water_residual_mm": 0.0,
+  "absolute_tolerance_mm": 0.0001,
+  "combined_budget_passed": false,
+  "interpretation": "Capillary water is credited to soil but not debited from aquifer in this reviewed source. Float32 output explains small rounding differences. This counterexample does not assess other regimes or reported field skill."
+}

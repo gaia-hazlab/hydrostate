@@ -291,3 +291,25 @@ research-fork status before implementation. These are starting points:
 - Regional hydrogeology and reference-model sources are also recorded in
   `docs/data_sources.md`; this is a starting inventory, not proof of suitability
   at hourly or hazard scales.
+
+## Regional soil-state integration and downstream consumers
+
+- Follow `docs/soil_state_architecture.md` and the pinned GWL comparison.
+  Reuse the existing GAIA soil twin's regional observation/inference layer;
+  do not start a competing regional controller without evaluating consolidation.
+  Hydrostate is a selectable hydraulic backend/reference, not a universal
+  statewide 3D physics mesh. This architecture is proposed, not connected code.
+- Keep reduced-product/prior/boundary handoffs separate from strict full 3D
+  restart identity. Require native support, physical quantity, clocks/datum,
+  covariance-versus-marginal semantics and stable ensemble/member identities.
+- A marginal mean/sigma does not define coherent hazard samples. A fine delivered
+  grid does not establish fine hydrological information. Flux mapping must
+  conserve integrated volumes; bilinear interpolation is insufficient evidence.
+- Verify actual hazard component equations/APIs. Landlab recharge-driven wetness
+  is not an external-pressure stability adapter; premapped liquefaction maps
+  do not automatically accept dynamic GWL. Separate antecedent state,
+  susceptibility, conditional triggering, displacement, runout and inundation.
+- Combined ledgers must cancel internal capillary/recharge exchanges between
+  owners. Retrospective calibration and whole-window baselines must not leak
+  future data into issue-time forecasts. Preserve snow, hydraulic hysteresis,
+  damage/recovery and reference state in complete cycling checkpoints.

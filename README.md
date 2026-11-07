@@ -28,6 +28,19 @@ is explicitly **not mesh-converged**.
 | MODFLOW foundation | Existing FloPy/MF6 smoke template and regional data-source workflow | Template is not a calibrated Puget Sound groundwater model |
 | Coupling/parallel design | Process ownership, Richards–deep aquifer interface, ecological/geotechnical exports and spatial decomposition | Target architecture, not an implemented distributed coupler |
 
+## Shared regional soil state and hazard consumers
+
+The [revised architecture](docs/soil_state_architecture.md) proposes reusing
+[GAIA Digital Twin of Soil](https://github.com/gaia-hazlab/gwl-space-time-smooth)
+for regional observations/analysis/orchestration, with Hydrostate and
+Mechanicalstate as selectable process capabilities. It separates reduced regional
+products, strict 3D restarts and hazard-specific handoffs. Read the
+[pinned comparison and executed counterexample](docs/reviews/gwl_comparison_2026-11-07.md)
+and independent [Fable](docs/reviews/fable_adversarial_prompt.md) /
+[Antigravity](docs/reviews/antigravity_adversarial_prompt.md) review prompts.
+This is an integration decision and acceptance plan; end-to-end assimilation,
+nesting and operational hazard forecasting remain unimplemented/unverified.
+
 ## Quick start
 
 Python 3.11 or later:

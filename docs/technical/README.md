@@ -51,3 +51,11 @@ The numerical valley and older hillslope toy are demonstrations. Neither their
 budget closure nor these smooth-solution tests demonstrate convergence of a
 storm outlet hydrograph. Scientific applications require application-specific
 mesh/time refinement and independent observations/reference solutions.
+
+- [Shared regional soil-state architecture](../soil_state_architecture.md):
+  revised ownership, multiscale hazard handoffs and promotion gates.
+- [Pinned GWL comparison](../reviews/gwl_comparison_2026-11-07.md): actual code,
+  selected tests and an independently executed capillary-budget counterexample.
+- Independent adversarial review prompts for
+  [Fable](../reviews/fable_adversarial_prompt.md) and
+  [Antigravity](../reviews/antigravity_adversarial_prompt.md).
