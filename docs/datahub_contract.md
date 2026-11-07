@@ -187,7 +187,11 @@ save_tree(tree, "coupled.zarr")
 restored_tree = open_tree("coupled.zarr")
 ```
 
-Install the repository's `datahub` extra for xarray/Gaia runtime support. The
+Install the repository's `datahub` extra with **Python 3.12 or later** for
+xarray/Gaia runtime support. The pinned Gaia stack requires `rioxarray>=0.23`,
+whose Python requirement is 3.12+, despite Gaia's package-level 3.11 minimum.
+Hydrostate's independent numerical core still supports Python 3.11+; the Gaia
+extra is not installable on Python 3.11 under these dependency constraints. The
 mandatory interoperability job uses the pinned Gaia source; setting
 `HYDROSTATE_REQUIRE_GAIA=1` makes a missing Gaia import a test failure rather than
 a skipped integration test. To use an already installed Gaia environment:

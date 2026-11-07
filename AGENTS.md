@@ -251,7 +251,9 @@ when justified. Keep upstream versions/commits and project patches traceable.
   the project environment. MODFLOW smoke runs require the relevant executable.
 - Gaia interoperability is an optional `datahub` dependency extra pinned in
   `pyproject.toml`; it is intentionally outside the default numerical Pixi
-  environment. Its CI job sets `HYDROSTATE_REQUIRE_GAIA=1` and must exercise
+  environment. The extra requires Python 3.12+ because the pinned Gaia stack's
+  `rioxarray>=0.23` requires it; the independent core supports Python 3.11+.
+  Its CI job sets `HYDROSTATE_REQUIRE_GAIA=1` and must exercise
   actual Gaia write/read APIs, including complete recovery-memory checkpoints.
   Generic DataHub timestamps preserve nanoseconds; the present hydraulic and
   recovery integration clocks support microseconds and must reject finer

@@ -74,7 +74,8 @@ The Pixi lock targets macOS ARM; the pip workflow and CI provide the portable
 numerical path. MODFLOW executables and geospatial dependencies are optional
 for the independent Richards/verification examples.
 
-For Gaia DataHub interoperability, install the separate optional stack:
+For Gaia DataHub interoperability, use **Python 3.12 or later** and install the
+separate optional stack:
 
 ```bash
 python -m pip install -e ".[toy,dev,datahub]"
@@ -82,7 +83,9 @@ HYDROSTATE_REQUIRE_GAIA=1 python -m unittest discover -s tests -v
 ```
 
 The `datahub` extra pins Gaia to the audited source commit and includes its
-geospatial/provider dependencies. It is not added to the default numerical
+geospatial/provider dependencies. The pinned Gaia dependency `rioxarray>=0.23`
+requires Python 3.12+, while the independent numerical core supports Python
+3.11+. The extra is not added to the default numerical
 Pixi environment. CI requires an actual Gaia write/read in its interoperability
 job; a missing optional dependency cannot silently skip that job's checks.
 
