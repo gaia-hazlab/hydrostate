@@ -48,6 +48,10 @@ strict unit registry; for example, pressure head is `m`, pore pressure `Pa`,
 conductivity `m/s`, intrinsic permeability `m2`, velocity `m/s`, density
 `kg/m3`, retention alpha `1/m` and volumetric water content `m3/m3`.
 Physical total porosity is `1`. Saturation and porosity are different quantities.
+The actual recovery fields `log_conductivity_anomaly`, `log_alpha_anomaly`,
+`water_repellency`, `root_loss` and `water_saturation` also use `1` and the strict
+continuous-field profile. Event `water_storage_before` and `water_storage_after`
+use `m3/m3` and retain complete per-cell physical support.
 The independent storage variable `total_water_storage_fraction` represents
 `W = theta + Ss max(psi,0)` for the current kernel; it is not silently relabeled
 as water content. Arbitrary field metadata cannot invent CF `standard_name`s;

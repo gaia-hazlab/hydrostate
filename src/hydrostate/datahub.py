@@ -35,8 +35,11 @@ FIELD_UNITS = {
     "theta": "m3/m3", "water_content": "m3/m3", "theta_r": "m3/m3", "theta_s": "m3/m3",
     "water_storage_fraction": "m3/m3", "storage_water_equivalent": "m3/m3",
     "total_water_storage_fraction": "m3/m3", "stored_water": "m3/m3",
-    "porosity": "1", "phi": "1", "saturation": "1", "damage": "1", "burn_fraction": "1",
+    "porosity": "1", "phi": "1", "saturation": "1", "water_saturation": "1",
+    "damage": "1", "burn_fraction": "1", "water_repellency": "1", "root_loss": "1",
     "elastic_damage": "1", "logK": "1", "logalpha": "1",
+    "log_conductivity_anomaly": "1", "log_alpha_anomaly": "1",
+    "water_storage_before": "m3/m3", "water_storage_after": "m3/m3",
     "alpha_per_m": "1/m", "n": "1", "ss_per_m": "1/m", "ks_m_s": "m/s",
     "intrinsic_permeability_m2": "m2", "vp_m_s": "m/s", "vs_m_s": "m/s",
     "bulk_density_kg_m3": "kg/m3", "facies_id": "1", "active": "1",
@@ -426,6 +429,10 @@ def validate_tree(tree: xr.DataTree) -> None:
             for axis in SPATIAL_DIMS:
                 if not np.array_equal(ds[axis], state[axis]):
                     raise ValueError(f"{node.path} {axis} grid differs; remap explicitly upstream")
+                spacing = ds.attrs.get(f"hydrostate:d{axis}_m")
+                if (type(spacing) not in (int, float) or not np.isfinite(spacing) or spacing <= 0
+                        or spacing != state.attrs.get(f"hydrostate:d{axis}_m")):
+                    raise ValueError(f"{node.path} {axis} spacing must match the shared physical grid")
             if ds.active.dims != SPATIAL_DIMS or ds.active.dtype.kind != "b" or not np.array_equal(ds.active, state.active):
                 raise ValueError(f"{node.path} active mask must match and remain boolean")
             if crs is None and ("spatial_ref" in ds or "proj:wkt2" in ds.attrs):

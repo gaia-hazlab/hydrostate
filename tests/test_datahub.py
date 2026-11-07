@@ -105,6 +105,43 @@ class DatahubTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "NaN outside"):
             build_tree(**args)
 
+    def test_actual_recovery_and_jump_fields_use_physical_profile(self):
+        args = self.arguments()
+        values = np.array(args["state_fields"]["water_content"].values, dtype=np.float64)
+        for name in ("log_conductivity_anomaly", "log_alpha_anomaly", "water_repellency",
+                     "root_loss", "water_saturation"):
+            args["material_fields"][name] = Field(values, "1")
+        for name in ("water_storage_before", "water_storage_after"):
+            args["event_fields"][name] = Field(values[:1], "m3/m3")
+        validate_tree(build_tree(**args))
+
+    def test_actual_recovery_and_jump_fields_reject_integer_and_active_holes(self):
+        fields = [("material_fields", name, "1") for name in
+                  ("log_conductivity_anomaly", "log_alpha_anomaly", "water_repellency",
+                   "root_loss", "water_saturation")]
+        fields += [("event_fields", name, "m3/m3") for name in
+                   ("water_storage_before", "water_storage_after")]
+        for group, name, units in fields:
+            for problem in ("integer", "active hole"):
+                args = self.arguments()
+                values = np.array(args["state_fields"]["water_content"].values, dtype=np.float64)
+                if group == "event_fields":
+                    values = values[:1]
+                if problem == "integer":
+                    values = np.zeros(values.shape, dtype=np.int32)
+                else:
+                    values[0, 0, 0, 0] = np.nan
+                args[group][name] = Field(values, units)
+                with self.subTest(field=name, problem=problem), self.assertRaisesRegex(ValueError, "floating|finite.*active"):
+                    build_tree(**args)
+
+    def test_leaf_spacing_cannot_disagree_with_shared_geometry(self):
+        for value in (2.0, True):
+            tree = build_tree(**self.arguments())
+            tree[MATERIAL_GROUP].attrs["hydrostate:dx_m"] = value
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "spacing"):
+                validate_tree(tree)
+
     def test_no_fabricated_standard_name(self):
         args = self.arguments()
         args["state_fields"]["pressure_head_m"] = Field(np.zeros((2, 2, 2, 2)), "m", {"standard_name": "fake_suction"})
