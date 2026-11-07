@@ -106,6 +106,14 @@ compensation and hydraulic redistribution as staged capabilities. Geotechnical
 modules consume pressure/suction/saturation and add their own strength,
 shaking/deformation or stability physics.
 
+[Mechanicalstate](https://github.com/gaia-hazlab/mechanicalstate) is the
+companion for geological/seismic structure, uncertain material priors and
+hydromechanical seismic observation operators. Its exact-grid adapter supplies
+retention/permeability materials to this solver; Hydrostate retains ownership
+of pressure, moisture and water storage. Seismic images do not uniquely specify
+hydraulic properties, and diagnostic capillary pressures do not modify the
+Richards equation.
+
 [Spatial parallelization](docs/spatial_parallelism.md) starts with horizontal
 tiles retaining vertical profiles, conservative face ownership and global
 implicit solves. Independent columns are an assessed physical approximation;
