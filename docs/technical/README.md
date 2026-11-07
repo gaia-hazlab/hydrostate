@@ -17,6 +17,12 @@ predicting hazards.
   24-hour time-step and staircase-grid probe. It is application sensitivity
   evidence, not another accepted manufactured-solution order test. Interpretation
   and reproduction commands are in the [use-case guide](../use_cases.md).
+- [Conservative material changes and hydraulic restarts](material_updates.md)
+  derives fixed-volume storage reconciliation and records rejection branches,
+  complete hydraulic state and restart-equivalence checks.
+- [Gaia model interchange](../datahub_contract.md) documents typed static and
+  evolving properties, exact events, interval ledgers and full coupled-memory
+  payloads verified through Gaia's actual storage APIs.
 
 Regenerate the evidence against the current source:
 

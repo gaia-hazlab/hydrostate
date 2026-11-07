@@ -17,6 +17,15 @@ numerics = [
   "numpy>=1.26",
   "scipy>=1.11",
 ]
+datahub = [
+  "numpy>=1.26",
+  "pandas>=2.0",
+  "xarray>=2024.10",
+  "pyproj>=3.6",
+  "rioxarray>=0.23",
+  "zarr>=3",
+  "gaia-cli @ git+https://github.com/gaia-hazlab/gaia-cli.git@aa8ed3def5af4c32a4a1e601252fcee439344ac8",
+]
 modflow = [
   "flopy>=3.9.0",
   "numpy>=1.26",

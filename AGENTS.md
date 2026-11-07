@@ -16,6 +16,11 @@ about triggering, deformation, inundation or runout.
 Hydrostate contains a monthly precipitation/recharge pipeline, a MODFLOW 6
 software template, independent synthetic 2D hillslope and 3D valley Richards
 experiments, analytical/manufactured verification and sensor CSV operators.
+It also provides fixed-grid conservative material updates, complete hydraulic
+checkpoints and typed Gaia DataHub interchange for a companion Mechanicalstate
+disturbance/recovery runner. These are prescribed synthetic material scenarios,
+not mechanics or calibrated damage/healing laws. See
+`docs/technical/material_updates.md` and `docs/datahub_contract.md`.
 The solvers are not a DHSVM–MODFLOW coupler. The 2D outlet hydrograph is not
 mesh-converged; the 3D valley has not established solution mesh convergence.
 The linear verification branch does not establish all nonlinear accuracy.
@@ -111,6 +116,18 @@ flux units/signs, mapping, feedback, convergence and restart behavior.
 - Save and restore the complete coupled restart state, including snow/soil,
   vadose memory or wave states, channel/surface storage and aquifer state.
   Demonstrate restart equivalence; restoring heads alone is insufficient.
+- When prescribed material parameters change on a fixed grid, retain each
+  cell's old conserved `W` and invert the new constitutive law. Do not hold
+  pressure fixed and silently change water, clip invalid storage, or modify
+  geometry through this transaction. Reject an update outside the declared
+  pressure/physics envelope. Recovery restarts must retain separate relaxation
+  modes/timescales, event IDs/order, forcing position and the global water ledger.
+- Model DataHub groups require exact grid/reference/active-mask identity,
+  explicit units, UTC timestamps, valid material epochs/fingerprints and
+  finite active physical fields with NaN outside the material domain. Synthetic
+  local grids must not claim an earth CRS. Do not run `gaia align` on model
+  prognostic/material/event/checkpoint groups: its current horizontal
+  reprojection and temporal averaging do not implement conservative 3D coupling.
 - Groundwater boundaries need hydrogeologic justification and may cross
   surface watershed divides. Rainier park boundaries, the volcanic edifice,
   a rectangular GIS extent and gauged watersheds are different domains.
@@ -232,6 +249,13 @@ when justified. Keep upstream versions/commits and project patches traceable.
 - The current lightweight test command is
   `PYTHONPATH=src python3 -m unittest discover -s tests`; `pixi run test` uses
   the project environment. MODFLOW smoke runs require the relevant executable.
+- Gaia interoperability is an optional `datahub` dependency extra pinned in
+  `pyproject.toml`; it is intentionally outside the default numerical Pixi
+  environment. Its CI job sets `HYDROSTATE_REQUIRE_GAIA=1` and must exercise
+  actual Gaia write/read APIs, including complete recovery-memory checkpoints.
+  Generic DataHub timestamps preserve nanoseconds; the present hydraulic and
+  recovery integration clocks support microseconds and must reject finer
+  precision rather than silently truncating it.
 - For scientific/coupling changes, add meaningful benchmarks as applicable:
   hydrostatic/no-flow equilibrium; infiltration/drainage against a suitable
   reference; layered/perched and moving-water-table behavior; gaining/losing

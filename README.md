@@ -23,6 +23,8 @@ is explicitly **not mesh-converged**.
 | 2D hillslope | Mixed Richards flow, layered lens, canopy/snow stores, root stress, ponding and lumped channel | Strong vertical-grid sensitivity of runoff; no complete dry-channel treatment |
 | Mathematical verification | Known solutions, physical invariants and manufactured-solution refinement experiments using the numerical kernel | Each result verifies its stated regime, not every nonlinear process or field application |
 | Sensor workflow | CSV ingestion, metadata/QC, observation operators and held-out comparison metrics | Synthetic fixtures demonstrate interfaces; real observations are not bundled and online assimilation is not implemented |
+| Material coupling | Exact-grid material transactions preserve each cell's stored water while reconciling pressure under new retention/storage laws; detached hydraulic restarts | Prescribed fixed-volume changes; no deformation, earthquake pore-pressure generation or moving landslide geometry |
+| Gaia DataHub interchange | Typed xarray/DataTree, dynamic materials, exact event times, interval ledgers and complete coupled restart payloads through pinned Gaia Zarr/STAC APIs | Model-aware readers are required; Gaia horizontal alignment/averaging is not a 3D coupling or restart operation |
 | MODFLOW foundation | Existing FloPy/MF6 smoke template and regional data-source workflow | Template is not a calibrated Puget Sound groundwater model |
 | Coupling/parallel design | Process ownership, Richards–deep aquifer interface, ecological/geotechnical exports and spatial decomposition | Target architecture, not an implemented distributed coupler |
 
@@ -72,6 +74,18 @@ The Pixi lock targets macOS ARM; the pip workflow and CI provide the portable
 numerical path. MODFLOW executables and geospatial dependencies are optional
 for the independent Richards/verification examples.
 
+For Gaia DataHub interoperability, install the separate optional stack:
+
+```bash
+python -m pip install -e ".[toy,dev,datahub]"
+HYDROSTATE_REQUIRE_GAIA=1 python -m unittest discover -s tests -v
+```
+
+The `datahub` extra pins Gaia to the audited source commit and includes its
+geospatial/provider dependencies. It is not added to the default numerical
+Pixi environment. CI requires an actual Gaia write/read in its interoperability
+job; a missing optional dependency cannot silently skip that job's checks.
+
 ## Experiments, observations and mathematical evidence
 
 - [3D valley experiment and use cases](docs/use_cases.md): geometry, forcing,
@@ -81,6 +95,12 @@ for the independent Richards/verification examples.
   remaining gaps.
 - [Sensor ingestion and validation](docs/sensors.md): units, CRS/datum, depths,
   well screens, uncertainty, UTC valid/arrival times, QA and comparison metrics.
+- [Conservative material updates and hydraulic restarts](docs/technical/material_updates.md):
+  the storage inverse, fixed-volume transactions, failure branches and restart
+  identity checks.
+- [Gaia DataHub contract](docs/datahub_contract.md): typed static/dynamic arrays,
+  references, provenance, interval bounds, event discontinuities and complete
+  recovery-memory checkpoints.
 - [2D toy report](docs/toy_watershed.md): reproducible numerical checks and the
   unresolved wetting-front/ponding sensitivity.
 
@@ -110,9 +130,14 @@ shaking/deformation or stability physics.
 companion for geological/seismic structure, uncertain material priors and
 hydromechanical seismic observation operators. Its exact-grid adapter supplies
 retention/permeability materials to this solver; Hydrostate retains ownership
-of pressure, moisture and water storage. Seismic images do not uniquely specify
-hydraulic properties, and diagnostic capillary pressures do not modify the
-Richards equation.
+of pressure, moisture and water storage. The material transaction now supports
+prescribed time-varying retention, conductivity and storage on the same grid:
+it conserves `W` per cell and recovers pressure through the updated constitutive
+law. The companion supplies prescribed disturbance/recovery scenarios and their
+restart memory. Seismic images do not uniquely specify hydraulic properties,
+and diagnostic capillary pressures do not modify the Richards equation.
+This interface does not predict damage initiation, liquefaction, slide motion
+or biological recovery; these require additional process models and evidence.
 
 [Spatial parallelization](docs/spatial_parallelism.md) starts with horizontal
 tiles retaining vertical profiles, conservative face ownership and global
@@ -129,7 +154,7 @@ Washington backbone. The original monthly Puget Sound workflow remains in the
 ## Repository layout
 
 ```text
-src/hydrostate/          3D numerical core, valley, verification and observations
+src/hydrostate/          3D numerical core, verification, observations, material coupling and DataHub
 src/puget_modflow/       Legacy pipeline, MF6 template and 2D reference
 examples/sensors/       Small synthetic sensor metadata and observations
 docs/technical/         Equations, verification reports and measured evidence

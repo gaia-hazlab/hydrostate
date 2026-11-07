@@ -2181,6 +2181,13 @@ packages:
   requires_dist:
   - numpy>=1.26 ; extra == 'numerics'
   - scipy>=1.11 ; extra == 'numerics'
+  - numpy>=1.26 ; extra == 'datahub'
+  - pandas>=2.0 ; extra == 'datahub'
+  - xarray>=2024.10 ; extra == 'datahub'
+  - pyproj>=3.6 ; extra == 'datahub'
+  - rioxarray>=0.23 ; extra == 'datahub'
+  - zarr>=3 ; extra == 'datahub'
+  - gaia-cli @ git+https://github.com/gaia-hazlab/gaia-cli.git@aa8ed3def5af4c32a4a1e601252fcee439344ac8 ; extra == 'datahub'
   - flopy>=3.9.0 ; extra == 'modflow'
   - numpy>=1.26 ; extra == 'modflow'
   - geopandas>=0.14 ; extra == 'geo'
