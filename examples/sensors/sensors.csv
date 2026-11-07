@@ -1,0 +1,7 @@
+sensor_id,kind,x_m,y_m,z_m,depth_m,screen_top_m,screen_bottom_m,support_x_m,support_y_m,support_z_m,units,uncertainty,horizontal_crs,vertical_datum,aquifer_id,screen_assumption,outlet_id,role,provenance
+SM_1,soil_moisture,65.0,25.0,3.25,,,,10.0,10.0,0.5,%,1.5,synthetic local Cartesian metres,arbitrary local elevation datum,,,,train,synthetic sampled from the same valley3d run; deterministic offsets; not field data
+SM_2,soil_moisture,35.0,55.0,3.75,,,,10.0,10.0,0.5,%,1.5,synthetic local Cartesian metres,arbitrary local elevation datum,,,,validation,synthetic sampled from the same valley3d run; deterministic offsets; not field data
+PSI_1,pore_pressure,35.0,55.0,3.75,,,,,,,kPa,0.2,synthetic local Cartesian metres,arbitrary local elevation datum,,,,validation,synthetic sampled from the same valley3d run; deterministic offsets; not field data
+HEAD_1,hydraulic_head,5.0,5.0,,,1.0,0.0,,,,m,0.03,synthetic local Cartesian metres,arbitrary local elevation datum,synthetic_unconfined,single_aquifer_uniform_conductance,,validation,synthetic sampled from the same valley3d run; deterministic offsets; not field data
+Q_OUT,streamflow,100.0,40.0,,,,,,,,L/s,0.02,synthetic local Cartesian metres,arbitrary local elevation datum,,,east_valley_boundary,validation,synthetic sampled from the same valley3d run; deterministic offsets; not field data
+P_GAUGE,precipitation,55.0,45.0,,,,,,,,mm/h,0.03,synthetic local Cartesian metres,arbitrary local elevation datum,,,,validation,synthetic sampled from the same valley3d run; deterministic offsets; not field data

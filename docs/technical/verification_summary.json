@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-07T15:10:46.976085+00:00",
+  "passed": true,
+  "acceptance_scope": "Required checks pass analytical linear spatial/time order, local constitutive/assembly checks and hydrostatic/conservation invariants. Nonlinear MMS remains an explicitly unaccepted asymptotic-order diagnostic.",
+  "kernel": "hydrostate.flow.RichardsModel (same advance/residual as valley runs)",
+  "kernel_sha256": "eb0aa58aa2884222faf0fbabe67a46b464bb874d6eaede5f8c9408fc2918f1bd",
+  "verification_sha256": "e7b4f70bc7e44674e49e0df09448caa6b236cda11923a09b378f3880aa061ff5",
+  "python_version": "3.12.13",
+  "numpy_version": "2.4.6",
+  "scipy_version": "1.17.1",
+  "wall_time_s": 1.7145778749836609,
+  "checks": {
+    "constitutive_derivatives": {
+      "passed": true,
+      "theta_max_absolute_error": 0.0,
+      "capacity_max_absolute_error_per_m": 2.7755575615628914e-17,
+      "conductivity_max_relative_error": 2.7108182188636404e-15,
+      "conductivity_derivative_max_relative_error": 3.0330914154223465e-08,
+      "storage_derivative_max_absolute_error_per_m": 2.2515427022806733e-11,
+      "derivative_scope": "Smooth unsaturated points and separate positive-head elastic branch; not the branch junction"
+    },
+    "affine_darcy_head": {
+      "passed": true,
+      "l2_m": 0.0,
+      "linf_m": 0.0,
+      "max_local_residual_m3_s": 1.145188544687814e-18,
+      "max_boundary_flux_error_m3_s": 4.2690460541616737e-19,
+      "max_internal_flux_error_m3_s": 2.778268066994105e-19,
+      "analytic_boundary_net_out_m3_s": 0.0,
+      "analytic_darcy_flux_xyz_m_s": [
+        -0.0003,
+        0.0002,
+        -0.0004
+      ],
+      "scope": "Affine 3-D total head, unequal spacings, exact half-cell head boundaries and constant conductivity"
+    },
+    "prescribed_source_and_flux": {
+      "passed": true,
+      "maximum_pressure_error_m": 0.0,
+      "source_volume_m3": 0.006,
+      "outward_boundary_volume_m3": 0.018000000000000002,
+      "storage_change_m3": -0.01200000000000001,
+      "scope": "Single-cell exact linear storage under positive source and positive outward prescribed volume flux; tests units and signs independently of Darcy head boundaries"
+    },
+    "heterogeneous_masked_hydrostatic": {
+      "passed": true,
+      "l2_m": 0.0,
+      "linf_m": 0.0,
+      "max_local_residual_m3_s": 0.0,
+      "active_cells": 117,
+      "inactive_cells": 8,
+      "conductivity_range_m_s": [
+        1.1411147976506536e-07,
+        0.000971791513335409
+      ],
+      "scope": "Nonlinear retention across saturation, heterogeneous K, stair-step mask, all exposed faces sealed"
+    },
+    "nonlinear_closed_redistribution": {
+      "passed": true,
+      "signed_storage_change_m3": -9.992007221626408e-18,
+      "max_pressure_change_m": 0.002320435848571223,
+      "max_local_residual_m3_s": 1.4085132950033278e-14,
+      "scope": "Non-equilibrium nonlinear 3-D closed-domain redistribution; conservation is necessary but not a front-accuracy benchmark"
+    },
+    "linear_residual_jacobian": {
+      "passed": true,
+      "symmetry_max_error_m2_s": 0.0,
+      "minimum_eigenvalue_m2_s": 0.04000000000115024,
+      "storage_row_sum_max_error_m2_s": 1.1502118701933739e-12,
+      "largest_off_diagonal_m2_s": 0.0,
+      "actual_solver_matrix_derivative_max_error_m2_s": 1.4884066201759083e-12,
+      "scope": "Linear residual Jacobian: positive storage, shared symmetric diffusion, nonpositive neighbor couplings; no-flow boundaries"
+    },
+    "linear_3d_spatial_mms": {
+      "passed": true,
+      "records": [
+        {
+          "n": 5,
+          "h_m": 0.24,
+          "l2_m": 0.002008491806863849,
+          "linf_m": 0.005680872706364859,
+          "max_local_residual_m3_s": 3.881443777498106e-17,
+          "budget_residual_m3": -1.3877787807814457e-17
+        },
+        {
+          "n": 9,
+          "h_m": 0.13333333333333333,
+          "l2_m": 0.0006162952225296815,
+          "linf_m": 0.0017431461242547464,
+          "max_local_residual_m3_s": 2.2415879916137804e-17,
+          "budget_residual_m3": -4.85722573273506e-17
+        },
+        {
+          "n": 17,
+          "h_m": 0.07058823529411765,
+          "l2_m": 0.00017240786731087984,
+          "linf_m": 0.00048764308842219606,
+          "max_local_residual_m3_s": 1.3471211993132393e-17,
+          "budget_residual_m3": -7.632783294297951e-17
+        }
+      ],
+      "rates": [
+        {
+          "coarse": 0.24,
+          "fine": 0.13333333333333333,
+          "l2_order": 2.009935473232683,
+          "linf_order": 2.0099354732325825
+        },
+        {
+          "coarse": 0.13333333333333333,
+          "fine": 0.07058823529411765,
+          "l2_order": 2.0029648029906033,
+          "linf_order": 2.002964802989391
+        }
+      ],
+      "expected_order": 2,
+      "exact_total_head": "3 m + (0.2 m)*(1+t/(1 s))*sin(pi*x/(1 m))*sin(pi*y/(1.2 m))*sin(pi*z/(0.8 m))",
+      "continuum_source_per_s": "A*[C/tau + K*(kx\u00b2+ky\u00b2+kz\u00b2)*(1+t/tau)]*P(x,y,z); tau=1 s",
+      "scope": "Constant-K, linear-storage branch of the SAME 3-D flow kernel; midpoint source, cell-center norms; odd grids align the exact field maximum across meshes, avoiding Linf sampling artifacts; no time-truncation error for this linear-in-time exact solution"
+    },
+    "backward_euler_temporal_mms": {
+      "passed": true,
+      "records": [
+        {
+          "steps": 4,
+          "dt_s": 0.1,
+          "l2_m": 0.007311080740999504,
+          "linf_m": 0.012882071108388793,
+          "max_local_residual_m3_s": 2.6773017396813925e-17
+        },
+        {
+          "steps": 8,
+          "dt_s": 0.05,
+          "l2_m": 0.0038118635387468917,
+          "linf_m": 0.006757001802518481,
+          "max_local_residual_m3_s": 3.2197416391030464e-17
+        },
+        {
+          "steps": 16,
+          "dt_s": 0.025,
+          "l2_m": 0.0019480846578225916,
+          "linf_m": 0.0034655424905349896,
+          "max_local_residual_m3_s": 4.0996394647108136e-17
+        }
+      ],
+      "rates": [
+        {
+          "coarse": 0.1,
+          "fine": 0.05,
+          "l2_order": 0.9395882114861069,
+          "linf_order": 0.930909415566794
+        },
+        {
+          "coarse": 0.05,
+          "fine": 0.025,
+          "l2_order": 0.9684400990874114,
+          "linf_order": 0.9633020327394326
+        }
+      ],
+      "expected_order": 1,
+      "exact_total_head": "3 + 0.3*exp(-2*t)",
+      "continuum_source_per_s": "-C*2*0.3*exp(-2*t)",
+      "scope": "Spatially uniform total head has exact FV Laplacian zero; measures backward-Euler temporal error with time-dependent exact head boundaries"
+    },
+    "nonlinear_3d_spatial_mms": {
+      "passed": null,
+      "acceptance_required": false,
+      "status": "diagnostic; nonlinear asymptotic Linf order not established",
+      "asymptotic_linf_verified": false,
+      "records": [
+        {
+          "n": 5,
+          "h_m": 0.24,
+          "l2_m": 0.0015776390949209082,
+          "linf_m": 0.005155238491869274,
+          "max_local_residual_m3_s": 3.7947792288052853e-13,
+          "budget_residual_m3": 1.9124159721106704e-12
+        },
+        {
+          "n": 9,
+          "h_m": 0.13333333333333333,
+          "l2_m": 0.0005443647844904438,
+          "linf_m": 0.002306871822098988,
+          "max_local_residual_m3_s": 1.2337145160448617e-13,
+          "budget_residual_m3": 1.1007817921071528e-13
+        },
+        {
+          "n": 17,
+          "h_m": 0.07058823529411765,
+          "l2_m": 0.0001594944449986169,
+          "linf_m": 0.0008022127612686836,
+          "max_local_residual_m3_s": 6.609012041571683e-14,
+          "budget_residual_m3": -8.937850459744823e-13
+        }
+      ],
+      "rates": [
+        {
+          "coarse": 0.24,
+          "fine": 0.13333333333333333,
+          "l2_order": 1.8102914654000541,
+          "linf_order": 1.368049007192048
+        },
+        {
+          "coarse": 0.13333333333333333,
+          "fine": 0.07058823529411765,
+          "l2_order": 1.9302392621869267,
+          "linf_order": 1.6608372512675256
+        }
+      ],
+      "trial_duration_s": 1.0,
+      "acceptance": "Diagnostic only: report measured errors/orders; no formal nonlinear asymptotic-order acceptance claimed",
+      "exact_pressure_head": "-0.8 + 0.12*sin(pi*x/1)*sin(pi*y/1.2)*sin(pi*z/0.8)",
+      "continuum_source_per_s": "-K'(psi)*(|grad psi|\u00b2 + dpsi/dz) - K(psi)*laplacian(psi)",
+      "scope": "Stationary smooth unsaturated nonlinear VG balance including gravity; does not validate sharp fronts, saturation transitions, hysteresis or heterogeneous-interface accuracy"
+    },
+    "nonlinear_short_duration_diagnostic": {
+      "passed": null,
+      "acceptance_required": false,
+      "status": "diagnostic; nonlinear asymptotic Linf order not established",
+      "asymptotic_linf_verified": false,
+      "records": [
+        {
+          "n": 5,
+          "h_m": 0.24,
+          "l2_m": 0.00046904653546568024,
+          "linf_m": 0.0018521692735561368,
+          "max_local_residual_m3_s": 5.2478365010206855e-14,
+          "budget_residual_m3": 1.4522183369031216e-14
+        },
+        {
+          "n": 9,
+          "h_m": 0.13333333333333333,
+          "l2_m": 0.00022460804585793767,
+          "linf_m": 0.0011947143497590407,
+          "max_local_residual_m3_s": 7.391090646313031e-13,
+          "budget_residual_m3": -3.3887215949990335e-13
+        },
+        {
+          "n": 17,
+          "h_m": 0.07058823529411765,
+          "l2_m": 8.270357055240186e-05,
+          "linf_m": 0.0005655084187705661,
+          "max_local_residual_m3_s": 1.2375230022276348e-13,
+          "budget_residual_m3": -2.9457726947838825e-13
+        }
+      ],
+      "rates": [
+        {
+          "coarse": 0.24,
+          "fine": 0.13333333333333333,
+          "l2_order": 1.2527421350588435,
+          "linf_order": 0.7459346046540385
+        },
+        {
+          "coarse": 0.13333333333333333,
+          "fine": 0.07058823529411765,
+          "l2_order": 1.5709304018289392,
+          "linf_order": 1.176022682036808
+        }
+      ],
+      "trial_duration_s": 0.1,
+      "acceptance": "Diagnostic only: report measured errors/orders; no formal nonlinear asymptotic-order acceptance claimed",
+      "exact_pressure_head": "-0.8 + 0.12*sin(pi*x/1)*sin(pi*y/1.2)*sin(pi*z/0.8)",
+      "continuum_source_per_s": "-K'(psi)*(|grad psi|\u00b2 + dpsi/dz) - K(psi)*laplacian(psi)",
+      "scope": "Stationary smooth unsaturated nonlinear VG balance including gravity; does not validate sharp fronts, saturation transitions, hysteresis or heterogeneous-interface accuracy"
+    }
+  },
+  "limitations": [
+    "Code verification is not field validation or uncertainty calibration.",
+    "No proof of correctness for arbitrary meshes, anisotropy, nonsmooth coefficients or boundary conditions.",
+    "Nonlinear infiltration fronts, capillary barriers, moving water tables, surface coupling and external reference comparisons remain separate validation/verification tasks.",
+    "No DHSVM/MODFLOW interoperability, DA skill, ecology/mechanics or operational warning claim follows from this suite."
+  ],
+  "references": [
+    {
+      "title": "Celia et al. 1990: mass-conservative mixed Richards formulation",
+      "url": "https://doi.org/10.1029/WR026i007p01483"
+    },
+    {
+      "title": "van Genuchten 1980: retention and conductivity",
+      "url": "https://doi.org/10.2136/sssaj1980.03615995004400050002x"
+    },
+    {
+      "title": "Salari and Knupp 2000: method of manufactured solutions",
+      "url": "https://doi.org/10.2172/759450"
+    },
+    {
+      "title": "NASA: Verification of Software: The Textbook and Real Problems",
+      "url": "https://ntrs.nasa.gov/citations/20080010138"
+    }
+  ]
+}

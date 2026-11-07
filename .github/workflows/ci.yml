@@ -1,0 +1,48 @@
+name: tests-and-verification
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install research and test dependencies
+        run: python -m pip install -e ".[toy,dev]"
+      - name: Run unit and physical-invariant tests
+        run: python -m unittest discover -s tests -v
+      - name: Run mathematical verification report
+        run: python -m hydrostate.verification --output runs/verification/report.json
+      - name: Run three-dimensional valley smoke experiment
+        run: python -m hydrostate.valley --hours 6 --output runs/valley3d/results.json
+      - name: Exercise sensor ingestion and forward comparison
+        run: >-
+          python -m hydrostate.observations --model runs/valley3d/results.json
+          --make-demo runs/sensors/generated --output runs/sensors/report.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: verification-python-${{ matrix.python }}
+          path: |
+            runs/verification/report.json
+            runs/valley3d/results.json
+            runs/sensors/report.json
+          if-no-files-found: warn
+          retention-days: 14

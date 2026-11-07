@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite this repository and the physical/numerical methods relevant to your experiment."
+type: software
+title: "Hydrostate: watershed vadose-zone and groundwater research prototypes"
+version: 0.1.0a1
+date-released: 2026-11-07
+url: "https://github.com/gaia-hazlab/hydrostate"
+repository-code: "https://github.com/gaia-hazlab/hydrostate"
+license: MIT
+authors:
+  - name: "GAIA Hazlab contributors"

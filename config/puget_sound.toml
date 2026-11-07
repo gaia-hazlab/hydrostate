@@ -1,0 +1,81 @@
+[project]
+name = "puget_sound_groundwater"
+workspace = "runs/puget_sound"
+
+[domain]
+name = "southeast_puget_sound"
+description = "USGS active model area in Pierce and southern King Counties; expand only after building a new calibrated regional grid."
+bounds_wgs84 = [-123.30, 46.75, -121.70, 47.55]
+model_crs = "EPSG:2927"
+
+[model]
+engine = "modflow6_template"
+reference_model = "usgs_southeast_puget_sound_modflow_nwt"
+length_units = "feet"
+time_units = "days"
+start_date = "2005-01-01"
+end_date = "2015-12-31"
+nlay = 13
+nrow = 32
+ncol = 32
+delr = 500.0
+delc = 500.0
+top = 300.0
+bottom = -700.0
+
+[precipitation]
+source = "PRISM"
+region = "us"
+resolution = "4km"
+element = "ppt"
+time_step = "monthly"
+units = "millimeters"
+
+[recharge]
+method = "swb_preferred_precip_fraction_fallback"
+default_fraction = 0.18
+min_fraction = 0.02
+max_fraction = 0.45
+units = "feet_per_day"
+
+[recharge.seasonal_factor]
+jan = 1.20
+feb = 1.15
+mar = 1.05
+apr = 0.95
+may = 0.75
+jun = 0.55
+jul = 0.35
+aug = 0.30
+sep = 0.45
+oct = 0.85
+nov = 1.10
+dec = 1.25
+
+[[reference_datasets]]
+name = "USGS 2024 spatial data for southeast Puget Sound groundwater characterization"
+doi = "10.5066/P9JFKLMG"
+sciencebase_item_id = "62fa7dfed34e25bd092879e6"
+role = "GIS framework, hydrogeologic surfaces, observations, and model support data"
+
+[[reference_datasets]]
+name = "USGS 2023 MODFLOW-NWT groundwater-flow model near Puget Sound"
+doi = "10.5066/P9LU1PMQ"
+sciencebase_item_id = "62d823d6d34e83b67d134f25"
+role = "Published calibrated steady-state and transient model inputs and outputs"
+
+[[reference_datasets]]
+name = "USGS 2023 Soil-Water Balance model for Puyallup and Chambers-Clover basins"
+doi = "10.5066/P925FHGQ"
+sciencebase_item_id = "5e010753e4b0b207aa033db2"
+role = "Preferred recharge estimation workflow for the active model area"
+
+[[observation_sources]]
+name = "USGS NWIS groundwater levels"
+url = "https://waterservices.usgs.gov/nwis/gwlevels/"
+role = "Historical groundwater-level observations for calibration and validation"
+
+[[observation_sources]]
+name = "Washington Ecology EIM and well-log/GIS data"
+url = "https://ecology.wa.gov/water-shorelines/water-quality/groundwater/groundwater-resources"
+role = "State groundwater studies, well logs, and GIS well datasets"
